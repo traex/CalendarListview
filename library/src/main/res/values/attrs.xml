@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DayPickerView">
+        <attr name="colorCurrentDay" format="color"/>
+        <attr name="colorSelectedDayBackground" format="color"/>
+        <attr name="colorSelectedDayText" format="color"/>
+        <attr name="colorPreviousDay" format="color"/>
+        <attr name="colorNormalDay" format="color" />
+        <attr name="colorMonthName" format="color" />
+        <attr name="colorDayName" format="color" />
+        <attr name="minYear" format="integer" />
+        <attr name="maxYear" format="integer" />
+        <attr name="textSizeDay" format="dimension"/>
+        <attr name="textSizeMonth" format="dimension" />
+        <attr name="textSizeDayName" format="dimension" />
+        <attr name="headerMonthHeight" format="dimension" />
+        <attr name="selectedDayRadius" format="dimension" />
+        <attr name="calendar_height" format="dimension" />
+    </declare-styleable>
+</resources>
