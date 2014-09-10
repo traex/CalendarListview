@@ -3,7 +3,9 @@ CalendarListview
 
 ![CalendarListview](https://github.com/traex/CalendarListview/blob/master/header.png)
 
-CalendarListview provides a easy way to select dates with a calendar.
+CalendarListview provides a easy way to select dates with a calendar. There is a sample that show how to add DatePickerView to your layout without customization
+
+![CalendarListview GIF](https://github.com/traex/CalendarListview/blob/master/demo.gif)
  
 ### Usage
  
