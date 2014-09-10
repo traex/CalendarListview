@@ -49,12 +49,6 @@ public class MainActivity extends Activity implements com.andexert.calendarlistv
     }
 
     @Override
-    public int getMinYear()
-    {
-        return 2014;
-    }
-
-    @Override
     public void onDayOfMonthSelected(int year, int month, int day)
     {
         Log.e("Day Slected", day + " / " + month + " / " + year);
