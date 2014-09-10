@@ -23,6 +23,7 @@ project.properties
 #Ant
 build.xml
 local.properties
+gradle.properties
 proguard.cfg
 
 #OSX
