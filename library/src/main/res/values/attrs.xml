@@ -8,7 +8,6 @@
         <attr name="colorNormalDay" format="color" />
         <attr name="colorMonthName" format="color" />
         <attr name="colorDayName" format="color" />
-        <attr name="minYear" format="integer" />
         <attr name="maxYear" format="integer" />
         <attr name="textSizeDay" format="dimension"/>
         <attr name="textSizeMonth" format="dimension" />
