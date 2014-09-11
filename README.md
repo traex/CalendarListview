@@ -8,7 +8,7 @@ CalendarListview provides a easy way to select dates with a calendar. [You can f
 ![CalendarListview GIF](https://github.com/traex/CalendarListview/blob/master/demo.gif)
  
 ### Integration
-The lib is available on Maven Central:
+The lib is available on Maven Central, you can find it with [Gradle, please](http://gradleplease.appspot.com/#calendarlistview)
 ``` xml
 
 dependencies {
