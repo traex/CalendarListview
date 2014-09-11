@@ -8,8 +8,8 @@ android {
         applicationId "com.andexert.calendarlistview.library"
         minSdkVersion 14
         targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1"
     }
     buildTypes {
         release {

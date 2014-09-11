@@ -23,11 +23,9 @@
  ***********************************************************************************/
 package com.andexert.calendarlistview.library;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
@@ -40,7 +38,7 @@ public class DayPickerView extends ListView implements AbsListView.OnScrollListe
 	private boolean mPerformingScroll;
 	protected long mPreviousScrollPosition;
 	protected int mPreviousScrollState = 0;
-    protected float mFriction = 1.0F;
+    final TypedArray typedArray;
     private final AttributeSet attrs;
 
     public DayPickerView(Context context)
@@ -57,6 +55,7 @@ public class DayPickerView extends ListView implements AbsListView.OnScrollListe
     {
         super(context, attrs, defStyle);
         this.attrs = attrs;
+        typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         setDrawSelectorOnTop(false);
         init(context);
@@ -98,7 +97,7 @@ public class DayPickerView extends ListView implements AbsListView.OnScrollListe
 
 	protected void setUpAdapter() {
 		if (mAdapter == null) {
-			mAdapter = new SimpleMonthAdapter(getContext(), mController, attrs);
+			mAdapter = new SimpleMonthAdapter(getContext(), mController, typedArray);
         }
 		mAdapter.notifyDataSetChanged();
 	}
@@ -111,14 +110,6 @@ public class DayPickerView extends ListView implements AbsListView.OnScrollListe
 		setVerticalScrollBarEnabled(false);
 		setOnScrollListener(this);
 		setFadingEdgeLength(0);
-		setFrictionIfSupported(ViewConfiguration.getScrollFriction() * mFriction);
-	}
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	void setFrictionIfSupported(float friction) {
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setFriction(friction);
-		}
 	}
 
     public SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> getSelectedDays()

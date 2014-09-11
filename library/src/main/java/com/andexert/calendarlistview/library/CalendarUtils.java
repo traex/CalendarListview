@@ -23,9 +23,6 @@
  ***********************************************************************************/
 package com.andexert.calendarlistview.library;
 
-import android.content.Context;
-import android.util.TypedValue;
-
 import java.util.Calendar;
 
 

@@ -24,8 +24,7 @@
 package com.andexert.calendarlistview.library;
 
 import android.content.Context;
-import android.util.AttributeSet;
-import android.util.Log;
+import android.content.res.TypedArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -39,14 +38,16 @@ import java.util.HashMap;
 
 public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.OnDayClickListener {
     protected static final int MONTHS_IN_YEAR = 12;
-    private final AttributeSet attrs;
+    private final TypedArray typedArray;
 	private final Context mContext;
 	private final DatePickerController mController;
     private final Calendar calendar;
     private final SelectedDays<CalendarDay> selectedDays;
+    private final Boolean startCurrentMonth;
 
-	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, AttributeSet attrs) {
-        this.attrs = attrs;
+	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
+        this.typedArray = typedArray;
+        startCurrentMonth = typedArray.getBoolean(R.styleable.DayPickerView_startCurrentMonth, false);
         selectedDays = new SelectedDays<CalendarDay>();
 		mContext = context;
 		mController = datePickerController;
@@ -67,13 +68,15 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
+        int month;
+        int year;
 		SimpleMonthView v;
         HashMap<String, Integer> drawingParams = null;
 		if (convertView != null) {
 			v = (SimpleMonthView) convertView;
             drawingParams = (HashMap<String, Integer>) v.getTag();
         } else {
-			v = new SimpleMonthView(mContext, attrs, 0);
+			v = new SimpleMonthView(mContext, typedArray);
 			v.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			v.setClickable(true);
 			v.setOnDayClickListener(this);
@@ -82,8 +85,18 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
             drawingParams = new HashMap<String, Integer>();
         }
         drawingParams.clear();
-        final int month = (calendar.get(Calendar.MONTH) + (position % MONTHS_IN_YEAR)) % MONTHS_IN_YEAR;
-        final int year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) + ((calendar.get(Calendar.MONTH) + (position % MONTHS_IN_YEAR)) / MONTHS_IN_YEAR);
+
+        if (startCurrentMonth)
+        {
+            month = (calendar.get(Calendar.MONTH) + (position % MONTHS_IN_YEAR)) % MONTHS_IN_YEAR;
+            year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) + ((calendar.get(Calendar.MONTH) + (position % MONTHS_IN_YEAR)) / MONTHS_IN_YEAR);
+        }
+        else
+        {
+            month = position % MONTHS_IN_YEAR;
+            year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR);
+        }
+
 
         int selectedFirstDay = -1;
         int selectedLastDay = -1;
@@ -124,7 +137,8 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
 	}
 
 	protected void init() {
-        setSelectedDay(new CalendarDay(System.currentTimeMillis()));
+        if (typedArray.getBoolean(R.styleable.DayPickerView_currentDaySelected, false))
+            onDayTapped(new CalendarDay(System.currentTimeMillis()));
 	}
 
 	public void onDayClick(SimpleMonthView simpleMonthView, CalendarDay calendarDay) {
