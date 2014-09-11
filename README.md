@@ -3,13 +3,23 @@ CalendarListview
 
 ![CalendarListview](https://github.com/traex/CalendarListview/blob/master/header.png)
 
-CalendarListview provides a easy way to select dates with a calendar. There is a sample that show how to add DatePickerView to your layout without customization. You can't select a past day and they are in italic.
+CalendarListview provides a easy way to select dates with a calendar. [You can find a sample](https://github.com/traex/CalendarListview/blob/master/sample/) that show how to add DatePickerView to your layout without customization. 
 
 ![CalendarListview GIF](https://github.com/traex/CalendarListview/blob/master/demo.gif)
  
+### Integration
+The lib is available on Maven Central:
+``` xml
+
+dependencies {
+    compile 'com.github.traex:calendarlistview:library:1.1.1'
+}
+
+```
+ 
 ### Usage
  
- To use it, you just have to put a `DayPickerView` in your layout
+Declare a DayPickerView inside your layout XML file:
  
 ``` xml
 
@@ -43,30 +53,31 @@ Next, you have to implement `DatePickerController` in your Activity or your Frag
 
 ### Customization
 
-You can use it with default parameters or your can change text color and font size.
+CalendarListview is fully customizable:
 
-``` xml
+    * app:colorCurrentDay [color def:#ff999999] --> The current day is always in bold but you can change its color
+    * app:colorSelectedDayBackground [color def:#E75F49] --> If you click on a day, a circle indicator or a rouded rectangle indicator will be draw.
+    * app:colorSelectedDayText [color def:#fff2f2f2] --> This is the text color of a selected day
+    * app:colorPreviousDay [color def:#ff999999] --> In the current month you can choose to have a specific color for the past days
+    * app:colorNormalDay [color def:#ff999999] --> Default text color for a day
+    * app:colorMonthName [color def:#ff999999] --> Month name and year text color
+    * app:colorDayName [color def:#ff999999] --> Day name text color
+    * app:textSizeDay [dimension def:16sp] --> Font size for numeric day
+    * app:textSizeMonth [dimension def:16sp] --> Font size for month name
+    * app:textSizeDayName [dimension def:10sp] --> Font size for day name
+    * app:headerMonthHeight [dimension def:50dip] --> Height of month name
+    * app:drawRoundRect [boolean def:false] --> Draw a rounded rectangle for selected days instead of a circle
+    * app:selectedDayRadius [dimension def:16dip] --> Set radius if you use default circle indicator
+    * app:calendarHeight [dimension def:270dip] --> Height of each month/row
+    * app:enablePreviousDay [boolean def:true] --> Enable past days in current month
+    * app:startCurrentMonth [boolean def:false] --> Start listview at the current month
+    * app:currentDaySelected [boolean def:false] --> Select current day by default
 
-    <declare-styleable name="DayPickerView">
-        <attr name="colorCurrentDay" format="color"/>
-        <attr name="colorSelectedDayBackground" format="color"/>
-        <attr name="colorSelectedDayText" format="color"/>
-        <attr name="colorPreviousDay" format="color"/>
-        <attr name="colorNormalDay" format="color" />
-        <attr name="colorMonthName" format="color" />
-        <attr name="colorDayName" format="color" />
-        <attr name="maxYear" format="integer" />
-        <attr name="textSizeDay" format="dimension"/>
-        <attr name="textSizeMonth" format="dimension" />
-        <attr name="textSizeDayName" format="dimension" />
-        <attr name="headerMonthHeight" format="dimension" />
-        <attr name="selectedDayRadius" format="dimension" />
-        <attr name="calendar_height" format="dimension" />
-    </declare-styleable>
+### Contact
 
-```
+You can reach me at [+RobinChutaux](https://plus.google.com/+RobinChutaux) or for technical support you are free to open an issue [here](https://github.com/traex/CalendarListview/issues) :)
 
-### License
+### MIT License
 
 ```
     The MIT License (MIT)

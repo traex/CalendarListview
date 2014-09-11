@@ -78,6 +78,7 @@ class SimpleMonthView extends View
     protected Paint mMonthTitleBGPaint;
     protected Paint mMonthTitlePaint;
     protected Paint mSelectedCirclePaint;
+    protected int mCurrentDayTextColor;
     protected int mMonthTextColor;
     protected int mDayTextColor;
     protected int mDayNumColor;
@@ -128,6 +129,7 @@ class SimpleMonthView extends View
         today.setToNow();
         mDayOfWeekTypeface = resources.getString(R.string.sans_serif);
         mMonthTitleTypeface = resources.getString(R.string.sans_serif);
+        mCurrentDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorCurrentDay, resources.getColor(R.color.normal_day));
         mMonthTextColor = typedArray.getColor(R.styleable.DayPickerView_colorMonthName, resources.getColor(R.color.normal_day));
         mDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorDayName, resources.getColor(R.color.normal_day));
         mDayNumColor = typedArray.getColor(R.styleable.DayPickerView_colorNormalDay, resources.getColor(R.color.normal_day));
@@ -224,6 +226,7 @@ class SimpleMonthView extends View
                     canvas.drawCircle(x, y - MINI_DAY_NUMBER_TEXT_SIZE / 3, DAY_SELECTED_CIRCLE_SIZE, mSelectedCirclePaint);
             }
             if (mHasToday && (mToday == day)) {
+                mMonthNumPaint.setColor(mCurrentDayTextColor);
                 mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             } else {
 				mMonthNumPaint.setColor(mDayNumColor);
