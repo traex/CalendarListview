@@ -75,7 +75,7 @@ CalendarListview is fully customizable:
 
 ### Contact
 
-You can reach me at [+RobinChutaux](https://plus.google.com/+RobinChutaux) or for technical support you are free to open an issue [here](https://github.com/traex/CalendarListview/issues) :)
+You can reach me at [+RobinChutaux](https://plus.google.com/+RobinChutaux) or for technical support feel free to open an issue [here](https://github.com/traex/CalendarListview/issues) :)
 
 ### MIT License
 
