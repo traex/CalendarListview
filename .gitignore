@@ -14,6 +14,10 @@ gen
 *.iws
 out
 
+#Gradle
+.gradle
+build
+
 #Maven
 target
 release.properties
@@ -27,7 +31,7 @@ gradle.properties
 proguard.cfg
 
 #OSX
-.DS_Store
+.DS_Store/
 
 # Crashlytics
 com_crashlytics_export_strings.xml
