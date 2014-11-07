@@ -25,6 +25,7 @@ package com.andexert.calendarlistview.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.AbsListView;
@@ -71,6 +72,7 @@ public class DayPickerView extends RecyclerView
 
 
 	public void init(Context paramContext) {
+        setLayoutManager(new LinearLayoutManager(paramContext));
 		mContext = paramContext;
 		setUpListView();
 
