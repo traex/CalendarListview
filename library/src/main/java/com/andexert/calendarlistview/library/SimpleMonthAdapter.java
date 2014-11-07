@@ -25,6 +25,7 @@ package com.andexert.calendarlistview.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -36,7 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.OnDayClickListener {
+public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.ViewHolder> implements SimpleMonthView.OnDayClickListener {
     protected static final int MONTHS_IN_YEAR = 12;
     private final TypedArray typedArray;
 	private final Context mContext;
@@ -55,36 +56,20 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
 		init();
 	}
 
-	public int getCount() {
-        return ((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * MONTHS_IN_YEAR;
-	}
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
+    {
+        final SimpleMonthView simpleMonthView = new SimpleMonthView(mContext, typedArray);
+        return new ViewHolder(simpleMonthView, this);
+    }
 
-	public Object getItem(int position) {
-		return null;
-	}
-
-	public long getItemId(int position) {
-		return position;
-	}
-
-	public View getView(int position, View convertView, ViewGroup parent) {
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, int position)
+    {
         int month;
         int year;
-		SimpleMonthView v;
-        HashMap<String, Integer> drawingParams = null;
-		if (convertView != null) {
-			v = (SimpleMonthView) convertView;
-            drawingParams = (HashMap<String, Integer>) v.getTag();
-        } else {
-			v = new SimpleMonthView(mContext, typedArray);
-			v.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			v.setClickable(true);
-			v.setOnDayClickListener(this);
-		}
-        if (drawingParams == null) {
-            drawingParams = new HashMap<String, Integer>();
-        }
-        drawingParams.clear();
+        SimpleMonthView v = viewHolder.simpleMonthView;
+        HashMap<String, Integer> drawingParams = new HashMap<String, Integer>();
 
         if (startCurrentMonth)
         {
@@ -119,7 +104,7 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
             selectedLastYear = selectedDays.getLast().year;
         }
 
-		v.reuse();
+        v.reuse();
 
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_BEGIN_YEAR, selectedFirstYear);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_LAST_YEAR, selectedLastYear);
@@ -130,11 +115,33 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_YEAR, year);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_MONTH, month);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_WEEK_START, calendar.getFirstDayOfWeek());
-		v.setMonthParams(drawingParams);
-		v.invalidate();
+        v.setMonthParams(drawingParams);
+        v.invalidate();
+    }
 
-		return v;
+    public long getItemId(int position) {
+		return position;
 	}
+
+    @Override
+    public int getItemCount()
+    {
+        return ((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * MONTHS_IN_YEAR;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder
+    {
+        final SimpleMonthView simpleMonthView;
+
+        public ViewHolder(View itemView, SimpleMonthView.OnDayClickListener onDayClickListener)
+        {
+            super(itemView);
+            simpleMonthView = (SimpleMonthView) itemView;
+            simpleMonthView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            simpleMonthView.setClickable(true);
+            simpleMonthView.setOnDayClickListener(onDayClickListener);
+        }
+    }
 
 	protected void init() {
         if (typedArray.getBoolean(R.styleable.DayPickerView_currentDaySelected, false))

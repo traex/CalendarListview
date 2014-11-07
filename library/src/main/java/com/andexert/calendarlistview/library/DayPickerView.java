@@ -25,11 +25,12 @@ package com.andexert.calendarlistview.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-public class DayPickerView extends ListView implements AbsListView.OnScrollListener
+public class DayPickerView extends RecyclerView
 {
     protected Context mContext;
 	protected SimpleMonthAdapter mAdapter;
@@ -40,6 +41,7 @@ public class DayPickerView extends ListView implements AbsListView.OnScrollListe
 	protected int mPreviousScrollState = 0;
     final TypedArray typedArray;
     private final AttributeSet attrs;
+    private OnScrollListener onScrollListener;
 
     public DayPickerView(Context context)
     {
@@ -57,7 +59,6 @@ public class DayPickerView extends ListView implements AbsListView.OnScrollListe
         this.attrs = attrs;
         typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        setDrawSelectorOnTop(false);
         init(context);
     }
 
@@ -72,27 +73,26 @@ public class DayPickerView extends ListView implements AbsListView.OnScrollListe
 	public void init(Context paramContext) {
 		mContext = paramContext;
 		setUpListView();
-	}
 
-	protected void layoutChildren() {
-		super.layoutChildren();
-		if (mPerformingScroll) {
-			mPerformingScroll = false;
-		}
+        onScrollListener = new OnScrollListener()
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                super.onScrolled(recyclerView, dx, dy);
+                SimpleMonthView child = (SimpleMonthView) recyclerView.getChildAt(0);
+                if (child == null) {
+                    return;
+                }
+
+                mPreviousScrollPosition = dy;
+                mPreviousScrollState = mCurrentScrollState;
+            }
+        };
 	}
 
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        SimpleMonthView child = (SimpleMonthView) view.getChildAt(0);
-        if (child == null) {
-            return;
-        }
 
-        long currScroll = view.getFirstVisiblePosition() * child.getHeight() - child.getBottom();
-        mPreviousScrollPosition = currScroll;
-        mPreviousScrollState = mCurrentScrollState;
-	}
-
-	public void onScrollStateChanged(AbsListView absListView, int scroll) {
 	}
 
 	protected void setUpAdapter() {
@@ -103,12 +103,8 @@ public class DayPickerView extends ListView implements AbsListView.OnScrollListe
 	}
 
 	protected void setUpListView() {
-		setCacheColorHint(0);
-		setDivider(null);
-		setItemsCanFocus(true);
-		setFastScrollEnabled(false);
 		setVerticalScrollBarEnabled(false);
-		setOnScrollListener(this);
+		setOnScrollListener(onScrollListener);
 		setFadingEdgeLength(0);
 	}
 
