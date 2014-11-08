@@ -30,7 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 
 import java.io.Serializable;
 import java.util.Calendar;

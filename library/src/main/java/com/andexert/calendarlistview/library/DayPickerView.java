@@ -29,7 +29,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.AbsListView;
-import android.widget.ListView;
 
 public class DayPickerView extends RecyclerView
 {
