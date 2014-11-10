@@ -3,7 +3,7 @@ CalendarListview
 
 ![CalendarListview](https://github.com/traex/CalendarListview/blob/master/header.png)
 
-CalendarListview provides a easy way to select dates with a calendar. [You can find a sample](https://github.com/traex/CalendarListview/blob/master/sample/) that show how to add DatePickerView to your layout without customization. 
+CalendarListview provides a easy way to select dates with a calendar for API 10+. [You can find a sample](https://github.com/traex/CalendarListview/blob/master/sample/) that show how to add DatePickerView to your layout without customization. 
 
 ![CalendarListview GIF](https://github.com/traex/CalendarListview/blob/master/demo.gif)
  
@@ -12,7 +12,7 @@ The lib is available on Maven Central, you can find it with [Gradle, please](htt
 ``` xml
 
 dependencies {
-    compile 'com.github.traex.calendarlistview:library:1.1.2'
+    compile 'com.github.traex.calendarlistview:library:1.2.2'
 }
 
 ```
