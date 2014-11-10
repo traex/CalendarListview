@@ -28,8 +28,6 @@ import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.widget.AbsListView;
-import android.widget.ListView;
 
 public class DayPickerView extends RecyclerView
 {
@@ -37,11 +35,9 @@ public class DayPickerView extends RecyclerView
 	protected SimpleMonthAdapter mAdapter;
 	private DatePickerController mController;
     protected int mCurrentScrollState = 0;
-	private boolean mPerformingScroll;
 	protected long mPreviousScrollPosition;
 	protected int mPreviousScrollState = 0;
-    final TypedArray typedArray;
-    private final AttributeSet attrs;
+    private TypedArray typedArray;
     private OnScrollListener onScrollListener;
 
     public DayPickerView(Context context)
@@ -57,10 +53,12 @@ public class DayPickerView extends RecyclerView
     public DayPickerView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
-        this.attrs = attrs;
-        typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
-        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        init(context);
+        if (!isInEditMode())
+        {
+            typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
+            setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            init(context);
+        }
     }
 
     public void setmController(DatePickerController mController)
@@ -93,9 +91,6 @@ public class DayPickerView extends RecyclerView
         };
 	}
 
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-	}
 
 	protected void setUpAdapter() {
 		if (mAdapter == null) {
