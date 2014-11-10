@@ -70,8 +70,9 @@ CalendarListview is fully customizable:
 * app:selectedDayRadius [dimension def:16dip] --> Set radius if you use default circle indicator
 * app:calendarHeight [dimension def:270dip] --> Height of each month/row
 * app:enablePreviousDay [boolean def:true] --> Enable past days in current month
-* app:startCurrentMonth [boolean def:false] --> Start listview at the current month
 * app:currentDaySelected [boolean def:false] --> Select current day by default
+* app:firstMonth [enum def:-1] --> Start listview at the specified month
+* app:lastMonth [enum def:-1] --> End listview at the specified month
 
 ### Contact
 
