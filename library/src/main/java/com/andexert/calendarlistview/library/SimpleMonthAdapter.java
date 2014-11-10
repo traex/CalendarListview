@@ -43,11 +43,13 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 	private final DatePickerController mController;
     private final Calendar calendar;
     private final SelectedDays<CalendarDay> selectedDays;
-    private final Boolean startCurrentMonth;
+    private final Integer firstMonth;
+    private final Integer lastMonth;
 
 	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
         this.typedArray = typedArray;
-        startCurrentMonth = typedArray.getBoolean(R.styleable.DayPickerView_startCurrentMonth, false);
+        firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, -1);
+        lastMonth = typedArray.getInt(R.styleable.DayPickerView_lastMonth, -1);
         selectedDays = new SelectedDays<CalendarDay>();
 		mContext = context;
 		mController = datePickerController;
@@ -70,10 +72,10 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         SimpleMonthView v = viewHolder.simpleMonthView;
         HashMap<String, Integer> drawingParams = new HashMap<String, Integer>();
 
-        if (startCurrentMonth)
+        if (firstMonth != -1)
         {
-            month = (calendar.get(Calendar.MONTH) + (position % MONTHS_IN_YEAR)) % MONTHS_IN_YEAR;
-            year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) + ((calendar.get(Calendar.MONTH) + (position % MONTHS_IN_YEAR)) / MONTHS_IN_YEAR);
+            month = (firstMonth + (position % MONTHS_IN_YEAR)) % MONTHS_IN_YEAR;
+            year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) + ((firstMonth + (position % MONTHS_IN_YEAR)) / MONTHS_IN_YEAR);
         }
         else
         {
@@ -125,7 +127,15 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     @Override
     public int getItemCount()
     {
-        return ((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * MONTHS_IN_YEAR;
+        int itemCount = (((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * MONTHS_IN_YEAR);
+
+        if (firstMonth != -1)
+            itemCount -= firstMonth;
+
+        if (lastMonth != -1)
+            itemCount -= (MONTHS_IN_YEAR - lastMonth) - 1;
+
+        return itemCount;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
