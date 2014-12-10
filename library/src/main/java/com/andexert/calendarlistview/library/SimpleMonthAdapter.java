@@ -48,12 +48,12 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 
 	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
         this.typedArray = typedArray;
-        firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, -1);
-        lastMonth = typedArray.getInt(R.styleable.DayPickerView_lastMonth, -1);
-        selectedDays = new SelectedDays<CalendarDay>();
+        calendar = Calendar.getInstance();
+        firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, calendar.get(Calendar.MONTH));
+        lastMonth = typedArray.getInt(R.styleable.DayPickerView_lastMonth, (calendar.get(Calendar.MONTH) - 1) % MONTHS_IN_YEAR);
+        selectedDays = new SelectedDays<>();
 		mContext = context;
 		mController = datePickerController;
-        calendar = Calendar.getInstance();
 		init();
 	}
 
@@ -67,22 +67,13 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position)
     {
+        final SimpleMonthView v = viewHolder.simpleMonthView;
+        final HashMap<String, Integer> drawingParams = new HashMap<String, Integer>();
         int month;
         int year;
-        SimpleMonthView v = viewHolder.simpleMonthView;
-        HashMap<String, Integer> drawingParams = new HashMap<String, Integer>();
 
-        if (firstMonth != -1)
-        {
-            month = (firstMonth + (position % MONTHS_IN_YEAR)) % MONTHS_IN_YEAR;
-            year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) + ((firstMonth + (position % MONTHS_IN_YEAR)) / MONTHS_IN_YEAR);
-        }
-        else
-        {
-            month = position % MONTHS_IN_YEAR;
-            year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR);
-        }
-
+        month = (firstMonth + (position % MONTHS_IN_YEAR)) % MONTHS_IN_YEAR;
+        year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) + ((firstMonth + (position % MONTHS_IN_YEAR)) / MONTHS_IN_YEAR);
 
         int selectedFirstDay = -1;
         int selectedLastDay = -1;
@@ -178,6 +169,8 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
                 for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
                     mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
             }
+
+            mController.onDateRangeSelected(selectedDays);
         }
         else if (selectedDays.getLast() != null)
         {
@@ -247,7 +240,21 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
             calendar.set(year, month, day);
             return calendar.getTime();
         }
-	}
+
+        @Override
+        public String toString()
+        {
+            final StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("{ year: ");
+            stringBuilder.append(year);
+            stringBuilder.append("; month: ");
+            stringBuilder.append(month);
+            stringBuilder.append("; day: ");
+            stringBuilder.append(day);
+
+            return stringBuilder.toString();
+        }
+    }
 
     public SelectedDays<CalendarDay> getSelectedDays()
     {

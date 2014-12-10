@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.andexert.calendarlistview.library.DayPickerView;
+import com.andexert.calendarlistview.library.SimpleMonthAdapter;
 
 
 public class MainActivity extends Activity implements com.andexert.calendarlistview.library.DatePickerController {
@@ -19,7 +20,7 @@ public class MainActivity extends Activity implements com.andexert.calendarlistv
         setContentView(R.layout.activity_main);
 
         dayPickerView = (DayPickerView) findViewById(R.id.pickerView);
-        dayPickerView.setmController(this);
+        dayPickerView.setController(this);
     }
 
 
@@ -51,6 +52,13 @@ public class MainActivity extends Activity implements com.andexert.calendarlistv
     @Override
     public void onDayOfMonthSelected(int year, int month, int day)
     {
-        Log.e("Day Slected", day + " / " + month + " / " + year);
+        Log.e("Day Selected", day + " / " + month + " / " + year);
+    }
+
+    @Override
+    public void onDateRangeSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays)
+    {
+
+        Log.e("Date range selected", selectedDays.getFirst().toString() + " --> " + selectedDays.getLast().toString());
     }
 }

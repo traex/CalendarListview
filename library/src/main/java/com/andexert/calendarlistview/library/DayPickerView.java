@@ -61,7 +61,7 @@ public class DayPickerView extends RecyclerView
         }
     }
 
-    public void setmController(DatePickerController mController)
+    public void setController(DatePickerController mController)
     {
         this.mController = mController;
         setUpAdapter();
@@ -80,7 +80,7 @@ public class DayPickerView extends RecyclerView
             public void onScrolled(RecyclerView recyclerView, int dx, int dy)
             {
                 super.onScrolled(recyclerView, dx, dy);
-                SimpleMonthView child = (SimpleMonthView) recyclerView.getChildAt(0);
+                final SimpleMonthView child = (SimpleMonthView) recyclerView.getChildAt(0);
                 if (child == null) {
                     return;
                 }
@@ -108,5 +108,15 @@ public class DayPickerView extends RecyclerView
     public SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> getSelectedDays()
     {
         return mAdapter.getSelectedDays();
+    }
+
+    protected DatePickerController getController()
+    {
+        return mController;
+    }
+
+    protected TypedArray getTypedArray()
+    {
+        return typedArray;
     }
 }

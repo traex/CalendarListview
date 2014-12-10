@@ -9,8 +9,6 @@
         android:id="@+id/pickerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        calendar:firstMonth="april"
-        calendar:lastMonth="january"
         calendar:drawRoundRect="true"/>
 
 </RelativeLayout>
