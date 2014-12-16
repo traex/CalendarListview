@@ -8,8 +8,8 @@ android {
         applicationId "com.andexert.sample"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 6
-        versionName "1.2"
+        versionCode 8
+        versionName "1.2.3"
     }
     buildTypes {
         release {
