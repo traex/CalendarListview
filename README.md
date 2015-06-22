@@ -23,17 +23,21 @@ Declare a DayPickerView inside your layout XML file:
  
 ``` xml
 
-  <com.andexert.calendarlistview.library.DayPickerView
-         android:id="@+id/pickerView"
-         xmlns:calendar="http://schemas.android.com/apk/res-auto"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"/>
-         
+ <com.andexert.calendarlistview.library.DayPickerView
+        android:id="@+id/pickerView"
+        xmlns:calendar="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+        
 ```
 
 Next, you have to implement `DatePickerController` in your Activity or your Fragment. You will have to set `getMaxYear` and `onDayOfMonthSelected`. The first one is the max year between the current one and this maxYear. The second one is called every time user selects a new date.
 
 ``` java
+
+public class MyFragment extends Fragment implements DatePickerController {
+
+...
 
     @Override
     public int getMaxYear()
@@ -44,11 +48,20 @@ Next, you have to implement `DatePickerController` in your Activity or your Frag
     @Override
     public void onDayOfMonthSelected(int year, int month, int day)
     {
-        Log.e("Day Selected", day + " / " + month + " / " + year);
+        Log.d("Day Selected", day + " / " + month + " / " + year);
     }
     
+ ...
+ 
+ }
 ```
 
+Finally, in `onCreate` or `onCreateView` method of your Activity or Fragment respectively, set the controller.
+
+``` java
+DayPickerView dayPickerView = (DayPickerView) findViewById(R.id.pickerView);
+dayPickerView.setController(this);
+```
 ---
 
 ### Customization
