@@ -105,7 +105,7 @@ public class DayPickerView extends RecyclerView
 		setFadingEdgeLength(0);
 	}
 
-    public SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> getSelectedDays()
+    public SimpleMonthAdapter.SelectedDays getSelectedDays()
     {
         return mAdapter.getSelectedDays();
     }
