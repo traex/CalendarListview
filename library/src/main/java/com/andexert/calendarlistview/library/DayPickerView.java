@@ -29,15 +29,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.andexert.calendarlistview.library.SimpleMonthAdapter.CalendarDay;
+
 public class DayPickerView extends RecyclerView
 {
-    protected Context mContext;
-	protected SimpleMonthAdapter mAdapter;
-	private DatePickerController mController;
+    protected Context              mContext;
+    protected SimpleMonthAdapter   mAdapter;
+    private   DatePickerController mController;
     protected int mCurrentScrollState = 0;
-	protected long mPreviousScrollPosition;
-	protected int mPreviousScrollState = 0;
-    private TypedArray typedArray;
+    protected long mPreviousScrollPosition;
+    protected int mPreviousScrollState = 0;
+    private TypedArray       typedArray;
     private OnScrollListener onScrollListener;
 
     public DayPickerView(Context context)
@@ -68,7 +70,6 @@ public class DayPickerView extends RecyclerView
         setAdapter(mAdapter);
     }
 
-
 	public void init(Context paramContext) {
         setLayoutManager(new LinearLayoutManager(paramContext));
 		mContext = paramContext;
@@ -91,6 +92,14 @@ public class DayPickerView extends RecyclerView
         };
 	}
 
+    public void setSelectedRange(CalendarDay first, CalendarDay last)
+    {
+        if (mAdapter != null)
+        {
+			mAdapter.setSelectedDay(first);
+			mAdapter.setSelectedDay(last);
+		}
+	}
 
 	protected void setUpAdapter() {
 		if (mAdapter == null) {

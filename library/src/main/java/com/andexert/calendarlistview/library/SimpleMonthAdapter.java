@@ -68,7 +68,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     public void onBindViewHolder(ViewHolder viewHolder, int position)
     {
         final SimpleMonthView v = viewHolder.simpleMonthView;
-        final HashMap<String, Integer> drawingParams = new HashMap<String, Integer>();
+        final HashMap<String, Integer> drawingParams = new HashMap<>();
         int month;
         int year;
 
@@ -244,13 +244,19 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 			this.day = day;
 		}
 
-        public Date getDate()
+        public Calendar getCalendar()
         {
             if (calendar == null) {
                 calendar = Calendar.getInstance();
             }
             calendar.set(year, month, day);
-            return calendar.getTime();
+
+            return calendar;
+        }
+
+        public Date getDate()
+        {
+            return getCalendar().getTime();
         }
 
         @Override

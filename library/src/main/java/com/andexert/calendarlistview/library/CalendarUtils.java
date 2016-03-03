@@ -30,7 +30,8 @@ import java.util.GregorianCalendar;
 
 public class CalendarUtils
 {
-	public static int getDaysInMonth(int month, int year) {
+	public static int getDaysInMonth(int month, int year)
+	{
         return new GregorianCalendar(year, month, 1).getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 

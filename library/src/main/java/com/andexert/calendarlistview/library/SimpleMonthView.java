@@ -150,7 +150,6 @@ class SimpleMonthView extends View
         isPrevDayEnabled = typedArray.getBoolean(R.styleable.DayPickerView_enablePreviousDay, true);
 
         initView();
-
     }
 
     private int calculateNumRows() {
@@ -197,7 +196,7 @@ class SimpleMonthView extends View
 			return;
 		}
 
-		if (!isPrevDayEnabled && prevDay(calendarDay)) {
+		if (!isPrevDayEnabled && prevDay(calendarDay.getCalendar())) {
 			return;
 		}
 
@@ -216,16 +215,9 @@ class SimpleMonthView extends View
 		return prevDay(cal);
 	}
 
-	private boolean prevDay(SimpleMonthAdapter.CalendarDay calendarDay) {
-		Calendar cal = Calendar.getInstance();
-		cal.set(calendarDay.year, calendarDay.month, calendarDay.day);
-		return prevDay(cal);
-	}
-
     private boolean prevDay(Calendar cal) {
         return ((cal.get(Calendar.YEAR) < today.get(Calendar.YEAR))) ||
-				(cal.get(Calendar.YEAR) == today.get(Calendar.YEAR) && cal.get(Calendar.MONTH) < today.get(Calendar.MONTH)) ||
-				(cal.get(Calendar.MONTH) == today.get(Calendar.MONTH) && cal.get(Calendar.DAY_OF_MONTH) < today.get(Calendar.DAY_OF_MONTH));
+				(cal.get(Calendar.YEAR) == today.get(Calendar.YEAR) && cal.get(Calendar.DAY_OF_YEAR) < today.get(Calendar.DAY_OF_YEAR));
     }
 
 	protected void drawMonthNums(Canvas canvas) {

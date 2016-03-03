@@ -23,11 +23,11 @@
  ***********************************************************************************/
 package com.andexert.calendarlistview.library;
 
-public interface DatePickerController {
-	public abstract int getMaxYear();
+public interface DatePickerController
+{
+	int getMaxYear();
 
-	public abstract void onDayOfMonthSelected(int year, int month, int day);
+	void onDayOfMonthSelected(int year, int month, int day);
 
-    public abstract void onDateRangeSelected(final SimpleMonthAdapter.SelectedDays selectedDays);
-
+    void onDateRangeSelected(final SimpleMonthAdapter.SelectedDays selectedDays);
 }
