@@ -42,7 +42,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 	private final Context mContext;
 	private final DatePickerController mController;
     private final Calendar calendar;
-    private final SelectedDays<CalendarDay> selectedDays;
+    private final SelectedDays selectedDays;
     private final Integer firstMonth;
     private final Integer lastMonth;
 
@@ -51,7 +51,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         calendar = Calendar.getInstance();
         firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, calendar.get(Calendar.MONTH));
         lastMonth = typedArray.getInt(R.styleable.DayPickerView_lastMonth, (calendar.get(Calendar.MONTH) - 1) % MONTHS_IN_YEAR);
-        selectedDays = new SelectedDays<>();
+        selectedDays = new SelectedDays();
 		mContext = context;
 		mController = datePickerController;
 		init();
@@ -155,7 +155,19 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 	}
 
 	protected void onDayTapped(CalendarDay calendarDay) {
-		mController.onDayOfMonthSelected(calendarDay.year, calendarDay.month, calendarDay.day);
+        if (!typedArray.getBoolean(R.styleable.DayPickerView_allowSingleDay, true))
+        {
+            if (selectedDays.getFirst() != null && selectedDays.getLast() == null)
+            {
+                if (CalendarUtils.isSameDay(calendarDay.getDate(), selectedDays.getFirst().getDate()))
+                {
+                    // Don't allow same day selection
+                    return;
+                }
+            }
+        }
+
+        mController.onDayOfMonthSelected(calendarDay.year, calendarDay.month, calendarDay.day);
 		setSelectedDay(calendarDay);
 	}
 
@@ -257,35 +269,43 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         }
     }
 
-    public SelectedDays<CalendarDay> getSelectedDays()
+    public SelectedDays getSelectedDays()
     {
         return selectedDays;
     }
 
-    public static class SelectedDays<K> implements Serializable
+    public static class SelectedDays implements Serializable
     {
         private static final long serialVersionUID = 3942549765282708376L;
-        private K first;
-        private K last;
+        private CalendarDay first;
+        private CalendarDay last;
 
-        public K getFirst()
+        public CalendarDay getFirst()
         {
             return first;
         }
 
-        public void setFirst(K first)
+        public void setFirst(CalendarDay first)
         {
             this.first = first;
         }
 
-        public K getLast()
+        public CalendarDay getLast()
         {
             return last;
         }
 
-        public void setLast(K last)
+        public void setLast(CalendarDay last)
         {
-            this.last = last;
+			if (last != null && last.getDate().before(first.getDate()))
+			{
+				this.last = this.first;
+				this.first = last;
+			}
+			else
+			{
+				this.last = last;
+			}
         }
     }
 }

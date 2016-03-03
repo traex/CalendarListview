@@ -24,6 +24,7 @@
 package com.andexert.calendarlistview.library;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 
@@ -31,5 +32,15 @@ public class CalendarUtils
 {
 	public static int getDaysInMonth(int month, int year) {
         return new GregorianCalendar(year, month, 1).getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
+
+	public static boolean isSameDay(Date first, Date second)
+	{
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
+		cal1.setTime(first);
+		cal2.setTime(second);
+		return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+				cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
 	}
 }
