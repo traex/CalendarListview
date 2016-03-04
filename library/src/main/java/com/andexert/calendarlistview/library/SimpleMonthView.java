@@ -284,17 +284,19 @@ class SimpleMonthView extends View
                 // There is a selected range
                 if (mSelectedBeginYear == mSelectedLastYear && mYear == mSelectedBeginYear)
                 {
-                    if (mMonth == mSelectedBeginMonth && mSelectedLastMonth == mSelectedBeginMonth &&
-                            day > mSelectedBeginDay && day < mSelectedLastDay)
-                    {
-                        // Same month, days between begin day and end day
-                        mMonthNumPaint.setColor(mSelectedDaysColor);
-                    }
-                    else if (mMonth > mSelectedBeginMonth && mMonth < mSelectedLastMonth)
-                    {
-                        // All days for months between begin month and end month
-                        mMonthNumPaint.setColor(mSelectedDaysColor);
-                    }
+					if (mMonth == mSelectedBeginMonth && mSelectedBeginMonth == mSelectedLastMonth)
+					{
+						if (day > mSelectedBeginDay && day < mSelectedLastDay)
+						{
+							// Same month, days between begin day and end day
+							mMonthNumPaint.setColor(mSelectedDaysColor);
+						}
+					}
+					else if (mMonth > mSelectedBeginMonth && mMonth < mSelectedLastMonth)
+					{
+						// All days for months between begin month and end month
+						mMonthNumPaint.setColor(mSelectedDaysColor);
+					}
                     else if ((mMonth == mSelectedBeginMonth && day > mSelectedBeginDay) ||
                              (mMonth == mSelectedLastMonth && day < mSelectedLastDay))
                     {
