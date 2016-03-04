@@ -220,87 +220,116 @@ class SimpleMonthView extends View
 				(cal.get(Calendar.YEAR) == today.get(Calendar.YEAR) && cal.get(Calendar.DAY_OF_YEAR) < today.get(Calendar.DAY_OF_YEAR));
     }
 
-	protected void drawMonthNums(Canvas canvas) {
-		int y = (mRowHeight + MINI_DAY_NUMBER_TEXT_SIZE) / 2 - DAY_SEPARATOR_WIDTH + MONTH_HEADER_SIZE;
-		int paddingDay = (mWidth - 2 * mPadding) / (2 * mNumDays);
-		int dayOffset = findDayOffset();
-		int day = 1;
+    protected void drawMonthNums(Canvas canvas)
+    {
+        int y = (mRowHeight + MINI_DAY_NUMBER_TEXT_SIZE) / 2 - DAY_SEPARATOR_WIDTH + MONTH_HEADER_SIZE;
+        int paddingDay = (mWidth - 2 * mPadding) / (2 * mNumDays);
+        int dayOffset = findDayOffset();
+        int day = 1;
 
-		while (day <= mNumCells) {
-			int x = paddingDay * (1 + dayOffset * 2) + mPadding;
-			if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) || (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear)) {
+        while (day <= mNumCells)
+        {
+            int x = paddingDay * (1 + dayOffset * 2) + mPadding;
+
+            // Draw Circle/Rect background for selected days
+            if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) ||
+                    (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear))
+            {
                 if (mDrawRect)
                 {
-                    RectF rectF = new RectF(x - DAY_SELECTED_CIRCLE_SIZE, (y  - MINI_DAY_NUMBER_TEXT_SIZE / 3) - DAY_SELECTED_CIRCLE_SIZE, x + DAY_SELECTED_CIRCLE_SIZE, (y  - MINI_DAY_NUMBER_TEXT_SIZE / 3) + DAY_SELECTED_CIRCLE_SIZE);
-                    canvas.drawRoundRect(rectF, 10.0f, 10.0f,mSelectedCirclePaint);
+                    RectF rectF = new RectF(x - DAY_SELECTED_CIRCLE_SIZE, (y - MINI_DAY_NUMBER_TEXT_SIZE / 3) - DAY_SELECTED_CIRCLE_SIZE, x + DAY_SELECTED_CIRCLE_SIZE, (y - MINI_DAY_NUMBER_TEXT_SIZE / 3) + DAY_SELECTED_CIRCLE_SIZE);
+                    canvas.drawRoundRect(rectF, 10.0f, 10.0f, mSelectedCirclePaint);
                 }
                 else
+                {
                     canvas.drawCircle(x, y - MINI_DAY_NUMBER_TEXT_SIZE / 3, DAY_SELECTED_CIRCLE_SIZE, mSelectedCirclePaint);
+                }
             }
-            if (mHasToday && (mToday == day)) {
+
+            // Make today BOLD, previous days italic, otherwise normal
+            if (mHasToday && (mToday == day))
+            {
                 mMonthNumPaint.setColor(mCurrentDayTextColor);
                 mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            } else {
-				mMonthNumPaint.setColor(mDayNumColor);
-                mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             }
-
-            if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) || (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear))
-                mMonthNumPaint.setColor(mMonthTitleBGColor);
-
-            if ((mSelectedBeginDay != -1 && mSelectedLastDay != -1 && mSelectedBeginYear == mSelectedLastYear &&
-                    mSelectedBeginMonth == mSelectedLastMonth &&
-                    mSelectedBeginDay == mSelectedLastDay &&
-                    day == mSelectedBeginDay &&
-                    mMonth == mSelectedBeginMonth &&
-                    mYear == mSelectedBeginYear))
-                mMonthNumPaint.setColor(mSelectedDaysColor);
-
-            if ((mSelectedBeginDay != -1 && mSelectedLastDay != -1 && mSelectedBeginYear == mSelectedLastYear && mSelectedBeginYear == mYear) &&
-                    (((mMonth == mSelectedBeginMonth && mSelectedLastMonth == mSelectedBeginMonth) && ((mSelectedBeginDay < mSelectedLastDay && day > mSelectedBeginDay && day < mSelectedLastDay) || (mSelectedBeginDay > mSelectedLastDay && day < mSelectedBeginDay && day > mSelectedLastDay))) ||
-                    ((mSelectedBeginMonth < mSelectedLastMonth && mMonth == mSelectedBeginMonth && day > mSelectedBeginDay) || (mSelectedBeginMonth < mSelectedLastMonth && mMonth == mSelectedLastMonth && day < mSelectedLastDay)) ||
-                    ((mSelectedBeginMonth > mSelectedLastMonth && mMonth == mSelectedBeginMonth && day < mSelectedBeginDay) || (mSelectedBeginMonth > mSelectedLastMonth && mMonth == mSelectedLastMonth && day > mSelectedLastDay))))
-            {
-                mMonthNumPaint.setColor(mSelectedDaysColor);
-            }
-
-            if ((mSelectedBeginDay != -1 && mSelectedLastDay != -1 && mSelectedBeginYear != mSelectedLastYear && ((mSelectedBeginYear == mYear && mMonth == mSelectedBeginMonth) || (mSelectedLastYear == mYear && mMonth == mSelectedLastMonth)) &&
-                    (((mSelectedBeginMonth < mSelectedLastMonth && mMonth == mSelectedBeginMonth && day < mSelectedBeginDay) || (mSelectedBeginMonth < mSelectedLastMonth && mMonth == mSelectedLastMonth && day > mSelectedLastDay)) ||
-                    ((mSelectedBeginMonth > mSelectedLastMonth && mMonth == mSelectedBeginMonth && day > mSelectedBeginDay) || (mSelectedBeginMonth > mSelectedLastMonth && mMonth == mSelectedLastMonth && day < mSelectedLastDay)))))
-            {
-                mMonthNumPaint.setColor(mSelectedDaysColor);
-            }
-
-            if ((mSelectedBeginDay != -1 && mSelectedLastDay != -1 && mSelectedBeginYear == mSelectedLastYear && mYear == mSelectedBeginYear) &&
-                    ((mMonth > mSelectedBeginMonth && mMonth < mSelectedLastMonth && mSelectedBeginMonth < mSelectedLastMonth) ||
-                     (mMonth < mSelectedBeginMonth && mMonth > mSelectedLastMonth && mSelectedBeginMonth > mSelectedLastMonth)))
-            {
-                mMonthNumPaint.setColor(mSelectedDaysColor);
-            }
-
-            if ((mSelectedBeginDay != -1 && mSelectedLastDay != -1 && mSelectedBeginYear != mSelectedLastYear) &&
-                    ((mSelectedBeginYear < mSelectedLastYear && ((mMonth > mSelectedBeginMonth && mYear == mSelectedBeginYear) || (mMonth < mSelectedLastMonth && mYear == mSelectedLastYear))) ||
-                     (mSelectedBeginYear > mSelectedLastYear && ((mMonth < mSelectedBeginMonth && mYear == mSelectedBeginYear) || (mMonth > mSelectedLastMonth && mYear == mSelectedLastYear)))))
-            {
-                mMonthNumPaint.setColor(mSelectedDaysColor);
-            }
-
-            if (!isPrevDayEnabled && prevDay(day))
+            else if (!isPrevDayEnabled && prevDay(day))
             {
                 mMonthNumPaint.setColor(mPreviousDayColor);
                 mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
             }
+            else
+            {
+                mMonthNumPaint.setColor(mDayNumColor);
+                mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            }
 
-			canvas.drawText(String.format("%d", day), x, y, mMonthNumPaint);
+            // Set color for day
+            if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) ||
+                (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear))
+            {
+                // Begin or End day
+                if (mSelectedBeginYear == mSelectedLastYear && mSelectedBeginMonth == mSelectedLastMonth &&
+                        mSelectedBeginDay == mSelectedLastDay)
+                {
+                    // Same Begin and End day
+                    mMonthNumPaint.setColor(mSelectedDaysColor);
+                }
+                else
+                {
+                    mMonthNumPaint.setColor(mMonthTitleBGColor);
+                }
+            }
+            else if (mSelectedBeginDay != -1 && mSelectedLastDay != -1)
+            {
+                // There is a selected range
+                if (mSelectedBeginYear == mSelectedLastYear && mYear == mSelectedBeginYear)
+                {
+                    if (mMonth == mSelectedBeginMonth && mSelectedLastMonth == mSelectedBeginMonth &&
+                            day > mSelectedBeginDay && day < mSelectedLastDay)
+                    {
+                        // Same month, days between begin day and end day
+                        mMonthNumPaint.setColor(mSelectedDaysColor);
+                    }
+                    else if (mMonth > mSelectedBeginMonth && mMonth < mSelectedLastMonth)
+                    {
+                        // All days for months between begin month and end month
+                        mMonthNumPaint.setColor(mSelectedDaysColor);
+                    }
+                    else if ((mMonth == mSelectedBeginMonth && day > mSelectedBeginDay) ||
+                             (mMonth == mSelectedLastMonth && day < mSelectedLastDay))
+                    {
+                        // Days of month between begin day and end day
+                        mMonthNumPaint.setColor(mSelectedDaysColor);
+                    }
+                }
+				else if (mSelectedBeginYear != mSelectedLastYear)
+				{
+					if ((mYear == mSelectedBeginYear && mMonth > mSelectedBeginMonth) ||
+						(mYear == mSelectedLastYear && mMonth < mSelectedLastMonth))
+					{
+						// All days for months between begin month and end month
+						mMonthNumPaint.setColor(mSelectedDaysColor);
+					}
+					else if ((mYear == mSelectedBeginYear && mMonth == mSelectedBeginMonth && day > mSelectedBeginDay) ||
+						     (mYear == mSelectedLastYear && mMonth == mSelectedLastMonth && day < mSelectedLastDay))
+					{
+						// Days of month between begin day and end day
+						mMonthNumPaint.setColor(mSelectedDaysColor);
+					}
+				}
+            }
 
-			dayOffset++;
-			if (dayOffset == mNumDays) {
-				dayOffset = 0;
-				y += mRowHeight;
-			}
-			day++;
-		}
-	}
+            canvas.drawText(String.format("%d", day), x, y, mMonthNumPaint);
+
+            dayOffset++;
+            if (dayOffset == mNumDays)
+            {
+                dayOffset = 0;
+                y += mRowHeight;
+            }
+            day++;
+        }
+    }
 
 	public SimpleMonthAdapter.CalendarDay getDayFromLocation(float x, float y) {
 		int padding = mPadding;
