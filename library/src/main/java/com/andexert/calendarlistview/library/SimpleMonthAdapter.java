@@ -163,32 +163,41 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
             return;
         }
 
-        mController.onDayOfMonthSelected(calendarDay.year, calendarDay.month, calendarDay.day);
 		setSelectedDay(calendarDay);
+		mController.onDayOfMonthSelected(calendarDay.year, calendarDay.month, calendarDay.day);
 	}
 
 	public void setSelectedDay(CalendarDay calendarDay) {
         if (selectedDays.getFirst() != null && selectedDays.getLast() == null)
         {
-            selectedDays.setLast(calendarDay);
-
-            if (selectedDays.getFirst().month < calendarDay.month)
-            {
-                for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
-                    mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
-            }
-
-            mController.onDateRangeSelected(selectedDays);
+			updateLastDay(calendarDay);
         }
         else if (selectedDays.getLast() != null)
         {
-            selectedDays.setFirst(calendarDay);
-            selectedDays.setLast(null);
-        }
+			selectedDays.setFirst(calendarDay);
+			selectedDays.setLast(null);
+		}
         else
-            selectedDays.setFirst(calendarDay);
+		{
+			selectedDays.setFirst(calendarDay);
+		}
 
 		notifyDataSetChanged();
+	}
+
+	private void updateLastDay(CalendarDay calendarDay)
+	{
+		selectedDays.setLast(calendarDay);
+
+		if (selectedDays.getFirst().month < calendarDay.month)
+		{
+			for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
+			{
+				mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
+			}
+		}
+
+		mController.onDateRangeSelected(selectedDays);
 	}
 
 	public static class CalendarDay implements Serializable
