@@ -159,7 +159,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         {
             if (selectedDays.getFirst() != null && selectedDays.getLast() == null)
             {
-                if (CalendarUtils.isSameDay(calendarDay.getDate(), selectedDays.getFirst().getDate()))
+                if (CalendarUtils.isSameDay(calendarDay.getCalendar(), selectedDays.getFirst().getCalendar()))
                 {
                     // Don't allow same day selection
                     return;

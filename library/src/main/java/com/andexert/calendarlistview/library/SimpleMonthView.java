@@ -206,7 +206,7 @@ class SimpleMonthView extends View
 	private boolean sameDay(int monthDay) {
 		Calendar cal = Calendar.getInstance();
 		cal.set(mYear, mMonth, monthDay);
-		return CalendarUtils.isSameDay(new Date(cal.getTimeInMillis()), new Date(today.getTimeInMillis()));
+		return CalendarUtils.isSameDay(cal, today);
 	}
 
 	private boolean prevDay(int monthDay) {

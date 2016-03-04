@@ -35,13 +35,9 @@ public class CalendarUtils
         return new GregorianCalendar(year, month, 1).getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 
-	public static boolean isSameDay(Date first, Date second)
+	public static boolean isSameDay(Calendar first, Calendar second)
 	{
-		Calendar cal1 = Calendar.getInstance();
-		Calendar cal2 = Calendar.getInstance();
-		cal1.setTime(first);
-		cal2.setTime(second);
-		return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-				cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+		return first.get(Calendar.YEAR) == second.get(Calendar.YEAR) &&
+				first.get(Calendar.DAY_OF_YEAR) == second.get(Calendar.DAY_OF_YEAR);
 	}
 }
