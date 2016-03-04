@@ -96,8 +96,15 @@ public class DayPickerView extends RecyclerView
     {
         if (mAdapter != null)
         {
-			mAdapter.setSelectedDay(first);
-			mAdapter.setSelectedDay(last);
+            if (first != null)
+            {
+                mAdapter.setSelectedDay(first);
+            }
+
+            if (last != null)
+            {
+                mAdapter.setSelectedDay(last);
+            }
 		}
 	}
 
