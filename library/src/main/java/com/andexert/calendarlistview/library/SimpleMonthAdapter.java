@@ -155,16 +155,12 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 	}
 
 	protected void onDayTapped(CalendarDay calendarDay) {
-        if (!typedArray.getBoolean(R.styleable.DayPickerView_allowSingleDay, true))
+        if (!typedArray.getBoolean(R.styleable.DayPickerView_allowSingleDay, true) &&
+            selectedDays.getFirst() != null && selectedDays.getLast() == null &&
+            CalendarUtils.isSameDay(calendarDay.getCalendar(), selectedDays.getFirst().getCalendar()))
         {
-            if (selectedDays.getFirst() != null && selectedDays.getLast() == null)
-            {
-                if (CalendarUtils.isSameDay(calendarDay.getCalendar(), selectedDays.getFirst().getCalendar()))
-                {
-                    // Don't allow same day selection
-                    return;
-                }
-            }
+            // Don't allow same day selection
+            return;
         }
 
         mController.onDayOfMonthSelected(calendarDay.year, calendarDay.month, calendarDay.day);
