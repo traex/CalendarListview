@@ -281,6 +281,8 @@ class SimpleMonthView extends View
             }
             else if (mSelectedBeginDay != -1 && mSelectedLastDay != -1)
             {
+				boolean isSelectedDay = false;
+
                 // There is a selected range
                 if (mSelectedBeginYear == mSelectedLastYear && mYear == mSelectedBeginYear)
                 {
@@ -289,20 +291,20 @@ class SimpleMonthView extends View
 						if (day > mSelectedBeginDay && day < mSelectedLastDay)
 						{
 							// Same month, days between begin day and end day
-							mMonthNumPaint.setColor(mSelectedDaysColor);
+							isSelectedDay = true;
 						}
 					}
 					else if (mMonth > mSelectedBeginMonth && mMonth < mSelectedLastMonth)
 					{
 						// All days for months between begin month and end month
-						mMonthNumPaint.setColor(mSelectedDaysColor);
+						isSelectedDay = true;
 					}
                     else if ((mMonth == mSelectedBeginMonth && day > mSelectedBeginDay) ||
                              (mMonth == mSelectedLastMonth && day < mSelectedLastDay))
                     {
                         // Days of month between begin day and end day
-                        mMonthNumPaint.setColor(mSelectedDaysColor);
-                    }
+						isSelectedDay = true;
+					}
                 }
 				else if (mSelectedBeginYear != mSelectedLastYear)
 				{
@@ -310,14 +312,19 @@ class SimpleMonthView extends View
 						(mYear == mSelectedLastYear && mMonth < mSelectedLastMonth))
 					{
 						// All days for months between begin month and end month
-						mMonthNumPaint.setColor(mSelectedDaysColor);
+						isSelectedDay = true;
 					}
 					else if ((mYear == mSelectedBeginYear && mMonth == mSelectedBeginMonth && day > mSelectedBeginDay) ||
 						     (mYear == mSelectedLastYear && mMonth == mSelectedLastMonth && day < mSelectedLastDay))
 					{
 						// Days of month between begin day and end day
-						mMonthNumPaint.setColor(mSelectedDaysColor);
+						isSelectedDay = true;
 					}
+				}
+
+				if (isSelectedDay)
+				{
+					mMonthNumPaint.setColor(mSelectedDaysColor);
 				}
             }
 
