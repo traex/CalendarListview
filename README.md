@@ -31,20 +31,26 @@ Declare a DayPickerView inside your layout XML file:
          
 ```
 
-Next, you have to implement `DatePickerController` in your Activity or your Fragment. You will have to set `getMaxYear` and `onDayOfMonthSelected`. The first one is the max year between the current one and this maxYear. The second one is called every time user selects a new date.
+Next, you have to implement `DatePickerController` or instantiate `DatePickerControllerAdapter` in your Activity or your Fragment. You will be able to set `getMaxYear`, `onDayOfMonthSelected`, and `onDateRangeSelected`. The first one is the max year between the current one and this maxYear. The second one is called every time user selects a new date.  The third is called when a range is selected. 
 
 ``` java
 
     @Override
     public int getMaxYear()
     {
-        return 2015;
+        return Calendar.getInstance().get(Calendar.YEAR) + 1;
     }
     
     @Override
     public void onDayOfMonthSelected(int year, int month, int day)
     {
         Log.e("Day Selected", day + " / " + month + " / " + year);
+    }
+    
+    @Override
+    public void onDateRangeSelected(SelectedDays selectedDays) 
+    {
+       Log.e("Date range selected", selectedDays.getFirst().toString() + " --> " + selectedDays.getLast().toString());
     }
     
 ```
@@ -70,6 +76,7 @@ CalendarListview is fully customizable:
 * app:selectedDayRadius [dimension def:16dip] --> Set radius if you use default circle indicator
 * app:calendarHeight [dimension def:270dip] --> Height of each month/row
 * app:enablePreviousDay [boolean def:true] --> Enable past days in current month
+* app:allowSingleDay [boolean def:true] --> Enable single day selection (same start and end date)
 * app:currentDaySelected [boolean def:false] --> Select current day by default
 * app:firstMonth [enum def:-1] --> Start listview at the specified month
 * app:lastMonth [enum def:-1] --> End listview at the specified month
