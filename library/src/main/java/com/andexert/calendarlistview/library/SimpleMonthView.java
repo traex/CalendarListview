@@ -39,109 +39,111 @@ import android.view.View;
 import java.security.InvalidParameterException;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
 class SimpleMonthView extends View
 {
-	public static final String VIEW_PARAMS_HEIGHT               = "height";
-	public static final String VIEW_PARAMS_MONTH                = "month";
-	public static final String VIEW_PARAMS_YEAR                 = "year";
-	public static final String VIEW_PARAMS_SELECTED_BEGIN_DAY   = "selected_begin_day";
-	public static final String VIEW_PARAMS_SELECTED_LAST_DAY    = "selected_last_day";
-	public static final String VIEW_PARAMS_SELECTED_BEGIN_MONTH = "selected_begin_month";
-	public static final String VIEW_PARAMS_SELECTED_LAST_MONTH  = "selected_last_month";
-	public static final String VIEW_PARAMS_SELECTED_BEGIN_YEAR  = "selected_begin_year";
-	public static final String VIEW_PARAMS_SELECTED_LAST_YEAR   = "selected_last_year";
-	public static final String VIEW_PARAMS_WEEK_START           = "week_start";
+    public static final String VIEW_PARAMS_HEIGHT               = "height";
+    public static final String VIEW_PARAMS_MONTH                = "month";
+    public static final String VIEW_PARAMS_YEAR                 = "year";
+    public static final String VIEW_PARAMS_SELECTED_BEGIN_DAY   = "selected_begin_day";
+    public static final String VIEW_PARAMS_SELECTED_LAST_DAY    = "selected_last_day";
+    public static final String VIEW_PARAMS_SELECTED_BEGIN_MONTH = "selected_begin_month";
+    public static final String VIEW_PARAMS_SELECTED_LAST_MONTH  = "selected_last_month";
+    public static final String VIEW_PARAMS_SELECTED_BEGIN_YEAR  = "selected_begin_year";
+    public static final String VIEW_PARAMS_SELECTED_LAST_YEAR   = "selected_last_year";
+    public static final String VIEW_PARAMS_WEEK_START           = "week_start";
 
-	private static final   int SELECTED_CIRCLE_ALPHA = 128;
-	protected static       int DEFAULT_HEIGHT        = 32;
-	protected static final int DEFAULT_NUM_ROWS      = 6;
-	protected static int DAY_SELECTED_CIRCLE_SIZE;
-	protected static int DAY_SEPARATOR_WIDTH = 1;
-	protected static int MINI_DAY_NUMBER_TEXT_SIZE;
-	protected static int MIN_HEIGHT = 10;
-	protected static int MONTH_DAY_LABEL_TEXT_SIZE;
-	protected static int MONTH_HEADER_SIZE;
-	protected static int MONTH_LABEL_TEXT_SIZE;
+    private static final String SANS_SERIF = "sans-serif";
 
-	protected int mPadding = 0;
+    protected static       int SELECTED_CIRCLE_ALPHA = 255;
+    protected static       int DEFAULT_HEIGHT        = 32;
+    protected static final int DEFAULT_NUM_ROWS      = 6;
+    protected static int DAY_SELECTED_CIRCLE_SIZE;
+    protected static int DAY_SEPARATOR_WIDTH = 1;
+    protected static int MINI_DAY_NUMBER_TEXT_SIZE;
+    protected static int MIN_HEIGHT = 10;
+    protected static int MONTH_DAY_LABEL_TEXT_SIZE;
+    protected static int MONTH_HEADER_SIZE;
+    protected static int MONTH_LABEL_TEXT_SIZE;
 
-	private String mDayOfWeekTypeface;
-	private String mMonthTitleTypeface;
+    protected int mPadding = 0;
 
-	protected Paint mMonthDayLabelPaint;
-	protected Paint mMonthNumPaint;
-	protected Paint mMonthTitleBGPaint;
-	protected Paint mMonthTitlePaint;
-	protected Paint mSelectedCirclePaint;
-	protected int   mCurrentDayTextColor;
-	protected int   mMonthTextColor;
-	protected int   mDayTextColor;
-	protected int   mDayNumColor;
-	protected int   mMonthTitleBGColor;
-	protected int   mPreviousDayColor;
-	protected int   mSelectedDaysColor;
+    private String mDayOfWeekTypeface;
+    private String mMonthTitleTypeface;
 
-	private final StringBuilder mStringBuilder;
+    protected Paint mMonthDayLabelPaint;
+    protected Paint mMonthNumPaint;
+    protected Paint mMonthTitleBGPaint;
+    protected Paint mMonthTitlePaint;
+    protected Paint mSelectedCirclePaint;
+    protected int   mCurrentDayTextColor;
+    protected int   mMonthTextColor;
+    protected int   mDayTextColor;
+    protected int   mDayNumColor;
+    protected int   mSelectedDayTextColor;
+    protected int   mPreviousDayColor;
+    protected int   mSelectedDayBgColor;
 
-	protected boolean mHasToday           = false;
-	protected boolean mIsPrev             = false;
-	protected int     mSelectedBeginDay   = -1;
-	protected int     mSelectedLastDay    = -1;
-	protected int     mSelectedBeginMonth = -1;
-	protected int     mSelectedLastMonth  = -1;
-	protected int     mSelectedBeginYear  = -1;
-	protected int     mSelectedLastYear   = -1;
-	protected int     mToday              = -1;
-	protected int     mWeekStart          = 1;
-	protected int     mNumDays            = 7;
-	protected int     mNumCells           = mNumDays;
-	private   int     mDayOfWeekStart     = 0;
-	protected int     mMonth;
-	protected Boolean mDrawRect;
-	protected int mRowHeight = DEFAULT_HEIGHT;
-	protected int  mWidth;
-	protected int  mYear;
-	final     Calendar today;
 
-	private final Calendar mCalendar;
-	private final Calendar mDayLabelCalendar;
-	private final Boolean  isPrevDayEnabled;
+    private final StringBuilder mStringBuilder;
 
-	private int mNumRows = DEFAULT_NUM_ROWS;
+    protected boolean mHasToday           = false;
+    protected boolean mIsPrev             = false;
+    protected int     mSelectedBeginDay   = -1;
+    protected int     mSelectedLastDay    = -1;
+    protected int     mSelectedBeginMonth = -1;
+    protected int     mSelectedLastMonth  = -1;
+    protected int     mSelectedBeginYear  = -1;
+    protected int     mSelectedLastYear   = -1;
+    protected int     mToday              = -1;
+    protected int     mWeekStart          = 1;
+    protected int     mNumDays            = 7;
+    protected int     mNumCells           = mNumDays;
+    private   int     mDayOfWeekStart     = 0;
+    protected int     mMonth;
+    protected Boolean mDrawRect;
+    protected int mRowHeight = DEFAULT_HEIGHT;
+    protected int      mWidth;
+    protected int      mYear;
+    final     Calendar today;
 
-	private DateFormatSymbols mDateFormatSymbols = new DateFormatSymbols();
+    private final Calendar mCalendar;
+    private final Calendar mDayLabelCalendar;
+    private final Boolean  isPrevDayEnabled;
 
-	private OnDayClickListener mOnDayClickListener;
+    private int mNumRows = DEFAULT_NUM_ROWS;
 
-	public SimpleMonthView(Context context, TypedArray typedArray)
-	{
-		super(context);
+    private DateFormatSymbols mDateFormatSymbols = new DateFormatSymbols();
 
-		Resources resources = context.getResources();
-		mDayLabelCalendar = Calendar.getInstance();
-		mCalendar = Calendar.getInstance();
-		today = Calendar.getInstance();
-		mDayOfWeekTypeface = resources.getString(R.string.sans_serif);
-		mMonthTitleTypeface = resources.getString(R.string.sans_serif);
-		mCurrentDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorCurrentDay, resources.getColor(R.color.normal_day));
-		mMonthTextColor = typedArray.getColor(R.styleable.DayPickerView_colorMonthName, resources.getColor(R.color.normal_day));
-		mDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorDayName, resources.getColor(R.color.normal_day));
-		mDayNumColor = typedArray.getColor(R.styleable.DayPickerView_colorNormalDay, resources.getColor(R.color.normal_day));
-		mPreviousDayColor = typedArray.getColor(R.styleable.DayPickerView_colorPreviousDay, resources.getColor(R.color.normal_day));
-		mSelectedDaysColor = typedArray.getColor(R.styleable.DayPickerView_colorSelectedDayBackground, resources.getColor(R.color.selected_day_background));
-		mMonthTitleBGColor = typedArray.getColor(R.styleable.DayPickerView_colorSelectedDayText, resources.getColor(R.color.selected_day_text));
+    private OnDayClickListener mOnDayClickListener;
 
-		mDrawRect = typedArray.getBoolean(R.styleable.DayPickerView_drawRoundRect, false);
+    public SimpleMonthView(Context context, TypedArray typedArray)
+    {
+        super(context);
 
-		mStringBuilder = new StringBuilder(50);
+        Resources resources = context.getResources();
+        mDayLabelCalendar = Calendar.getInstance();
+        mCalendar = Calendar.getInstance();
+        today = Calendar.getInstance();
+        mDayOfWeekTypeface = SANS_SERIF;
+        mMonthTitleTypeface = SANS_SERIF;
+        mCurrentDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorCurrentDay, resources.getColor(R.color.normal_day));
+        mMonthTextColor = typedArray.getColor(R.styleable.DayPickerView_colorMonthName, resources.getColor(R.color.normal_day));
+        mDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorDayName, resources.getColor(R.color.normal_day));
+        mDayNumColor = typedArray.getColor(R.styleable.DayPickerView_colorNormalDay, resources.getColor(R.color.normal_day));
+        mPreviousDayColor = typedArray.getColor(R.styleable.DayPickerView_colorPreviousDay, resources.getColor(R.color.normal_day));
+        mSelectedDayBgColor = typedArray.getColor(R.styleable.DayPickerView_colorSelectedDayBackground, resources.getColor(R.color.selected_day_background));
+        mSelectedDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorSelectedDayText, resources.getColor(R.color.selected_day_text));
 
-		MINI_DAY_NUMBER_TEXT_SIZE = typedArray.getDimensionPixelSize(R.styleable.DayPickerView_textSizeDay, resources.getDimensionPixelSize(R.dimen.text_size_day));
-		MONTH_LABEL_TEXT_SIZE = typedArray.getDimensionPixelSize(R.styleable.DayPickerView_textSizeMonth, resources.getDimensionPixelSize(R.dimen.text_size_month));
-		MONTH_DAY_LABEL_TEXT_SIZE = typedArray.getDimensionPixelSize(R.styleable.DayPickerView_textSizeDayName, resources.getDimensionPixelSize(R.dimen.text_size_day_name));
+        mDrawRect = typedArray.getBoolean(R.styleable.DayPickerView_drawRoundRect, false);
+
+        mStringBuilder = new StringBuilder(50);
+
+        MINI_DAY_NUMBER_TEXT_SIZE = typedArray.getDimensionPixelSize(R.styleable.DayPickerView_textSizeDay, resources.getDimensionPixelSize(R.dimen.text_size_day));
+        MONTH_LABEL_TEXT_SIZE = typedArray.getDimensionPixelSize(R.styleable.DayPickerView_textSizeMonth, resources.getDimensionPixelSize(R.dimen.text_size_month));
+        MONTH_DAY_LABEL_TEXT_SIZE = typedArray.getDimensionPixelSize(R.styleable.DayPickerView_textSizeDayName, resources.getDimensionPixelSize(R.dimen.text_size_day_name));
         MONTH_HEADER_SIZE = typedArray.getDimensionPixelOffset(R.styleable.DayPickerView_headerMonthHeight, resources.getDimensionPixelOffset(R.dimen.header_month_height));
         DAY_SELECTED_CIRCLE_SIZE = typedArray.getDimensionPixelSize(R.styleable.DayPickerView_selectedDayRadius, resources.getDimensionPixelOffset(R.dimen.selected_day_radius));
 
@@ -231,10 +233,13 @@ class SimpleMonthView extends View
         {
             int x = paddingDay * (1 + dayOffset * 2) + mPadding;
 
+            boolean isFirst = (mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear);
+            boolean isLast = (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear);
+
             // Draw Circle/Rect background for selected days
-            if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) ||
-                    (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear))
+            if (isFirst || isLast)
             {
+                // Now draw selected day rect or circle
                 if (mDrawRect)
                 {
                     RectF rectF = new RectF(x - DAY_SELECTED_CIRCLE_SIZE, (y - MINI_DAY_NUMBER_TEXT_SIZE / 3) - DAY_SELECTED_CIRCLE_SIZE, x + DAY_SELECTED_CIRCLE_SIZE, (y - MINI_DAY_NUMBER_TEXT_SIZE / 3) + DAY_SELECTED_CIRCLE_SIZE);
@@ -264,19 +269,16 @@ class SimpleMonthView extends View
             }
 
             // Set color for day
-            if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) ||
-                (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear))
+            if (isFirst || isLast)
             {
-                // Begin or End day
-                if (mSelectedBeginYear == mSelectedLastYear && mSelectedBeginMonth == mSelectedLastMonth &&
-                        mSelectedBeginDay == mSelectedLastDay)
+                if (isFirst && isLast)
                 {
                     // Same Begin and End day
-                    mMonthNumPaint.setColor(mSelectedDaysColor);
+                    mMonthNumPaint.setColor(mSelectedDayBgColor);
                 }
                 else
                 {
-                    mMonthNumPaint.setColor(mMonthTitleBGColor);
+                    mMonthNumPaint.setColor(mSelectedDayTextColor);
                 }
             }
             else if (mSelectedBeginDay != -1 && mSelectedLastDay != -1)
@@ -324,7 +326,7 @@ class SimpleMonthView extends View
 
 				if (isSelectedDay)
 				{
-					mMonthNumPaint.setColor(mSelectedDaysColor);
+					mMonthNumPaint.setColor(mSelectedDayBgColor);
 				}
             }
 
@@ -368,14 +370,14 @@ class SimpleMonthView extends View
         mMonthTitleBGPaint = new Paint();
         mMonthTitleBGPaint.setFakeBoldText(true);
         mMonthTitleBGPaint.setAntiAlias(true);
-        mMonthTitleBGPaint.setColor(mMonthTitleBGColor);
+        mMonthTitleBGPaint.setColor(mSelectedDayTextColor);
         mMonthTitleBGPaint.setTextAlign(Align.CENTER);
         mMonthTitleBGPaint.setStyle(Style.FILL);
 
         mSelectedCirclePaint = new Paint();
         mSelectedCirclePaint.setFakeBoldText(true);
         mSelectedCirclePaint.setAntiAlias(true);
-        mSelectedCirclePaint.setColor(mSelectedDaysColor);
+        mSelectedCirclePaint.setColor(mSelectedDayBgColor);
         mSelectedCirclePaint.setTextAlign(Align.CENTER);
         mSelectedCirclePaint.setStyle(Style.FILL);
         mSelectedCirclePaint.setAlpha(SELECTED_CIRCLE_ALPHA);
