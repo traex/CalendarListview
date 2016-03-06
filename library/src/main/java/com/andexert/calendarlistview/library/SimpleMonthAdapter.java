@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.ViewHolder> implements SimpleMonthView.OnDayClickListener {
+    protected static final int MONTHS_IN_YEAR = DatePickerAttributes.MONTHS_IN_YEAR;
     private final Context              mContext;
     private final DatePickerAttributes mAttributes;
     private final DatePickerController mController;
@@ -68,9 +69,8 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         int month;
         int year;
 
-        month = (mAttributes.firstMonth + (position % DatePickerAttributes.MONTHS_IN_YEAR)) % DatePickerAttributes.MONTHS_IN_YEAR;
-        year = position / DatePickerAttributes.MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) +
-				((mAttributes.firstMonth + (position % DatePickerAttributes.MONTHS_IN_YEAR)) / DatePickerAttributes.MONTHS_IN_YEAR);
+        month = (mAttributes.firstMonth + (position % MONTHS_IN_YEAR)) % MONTHS_IN_YEAR;
+        year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) + ((mAttributes.firstMonth + (position % MONTHS_IN_YEAR)) / MONTHS_IN_YEAR);
 
         int selectedFirstDay = -1;
         int selectedLastDay = -1;
@@ -115,13 +115,13 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     @Override
     public int getItemCount()
     {
-        int itemCount = (((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * DatePickerAttributes.MONTHS_IN_YEAR);
+        int itemCount = (((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * MONTHS_IN_YEAR);
 
         if (mAttributes.firstMonth != -1)
             itemCount -= mAttributes.firstMonth;
 
         if (mAttributes.lastMonth != -1)
-            itemCount -= (DatePickerAttributes.MONTHS_IN_YEAR - mAttributes.lastMonth) - 1;
+            itemCount -= (MONTHS_IN_YEAR - mAttributes.lastMonth) - 1;
 
         return itemCount;
     }
