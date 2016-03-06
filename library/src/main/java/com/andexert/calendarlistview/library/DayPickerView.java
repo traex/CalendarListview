@@ -32,16 +32,16 @@ import com.andexert.calendarlistview.library.SimpleMonthAdapter.CalendarDay;
 
 public class DayPickerView extends RecyclerView
 {
-    protected Context              mContext;
+	protected Context              mContext;
 	private   AttributeSet         mAttributes;
 	protected SimpleMonthAdapter   mAdapter;
-    private   DatePickerController mController;
+	private   DatePickerController mController;
+	private   OnScrollListener     onScrollListener;
 
     protected int mCurrentScrollState = 0;
     protected long mPreviousScrollPosition;
     protected int mPreviousScrollState = 0;
 
-    private OnScrollListener onScrollListener;
 
     public DayPickerView(Context context)
     {

@@ -58,7 +58,7 @@ class SimpleMonthView extends View
 
     private static final String SANS_SERIF = "sans-serif";
 
-    protected static       int SELECTED_CIRCLE_ALPHA = 255;
+    protected static       int SELECTED_CIRCLE_ALPHA = 128;
     protected static       int DEFAULT_HEIGHT        = 32;
     protected static final int DEFAULT_NUM_ROWS      = 6;
     protected static int DAY_SELECTED_CIRCLE_SIZE;
