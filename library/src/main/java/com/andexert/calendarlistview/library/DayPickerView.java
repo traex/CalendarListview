@@ -24,7 +24,6 @@
 package com.andexert.calendarlistview.library;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -34,12 +33,14 @@ import com.andexert.calendarlistview.library.SimpleMonthAdapter.CalendarDay;
 public class DayPickerView extends RecyclerView
 {
     protected Context              mContext;
-    protected SimpleMonthAdapter   mAdapter;
+	private   AttributeSet         mAttributes;
+	protected SimpleMonthAdapter   mAdapter;
     private   DatePickerController mController;
+
     protected int mCurrentScrollState = 0;
     protected long mPreviousScrollPosition;
     protected int mPreviousScrollState = 0;
-    private TypedArray       typedArray;
+
     private OnScrollListener onScrollListener;
 
     public DayPickerView(Context context)
@@ -57,7 +58,7 @@ public class DayPickerView extends RecyclerView
         super(context, attrs, defStyle);
         if (!isInEditMode())
         {
-            typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
+            mAttributes = attrs;
             setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             init(context);
         }
@@ -110,7 +111,7 @@ public class DayPickerView extends RecyclerView
 
 	protected void setUpAdapter() {
 		if (mAdapter == null) {
-			mAdapter = new SimpleMonthAdapter(getContext(), mController, typedArray);
+			mAdapter = new SimpleMonthAdapter(getContext(), mController, mAttributes);
         }
 		mAdapter.notifyDataSetChanged();
 	}
@@ -131,8 +132,8 @@ public class DayPickerView extends RecyclerView
         return mController;
     }
 
-    protected TypedArray getTypedArray()
+    protected AttributeSet getAttributeSet()
     {
-        return typedArray;
+        return mAttributes;
     }
 }

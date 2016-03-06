@@ -26,6 +26,7 @@ package com.andexert.calendarlistview.library;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -38,29 +39,39 @@ import java.util.HashMap;
 
 public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.ViewHolder> implements SimpleMonthView.OnDayClickListener {
     protected static final int MONTHS_IN_YEAR = 12;
-    private final TypedArray typedArray;
-	private final Context mContext;
-	private final DatePickerController mController;
-    private final Calendar calendar;
-    private final SelectedDays selectedDays;
-    private final Integer firstMonth;
-    private final Integer lastMonth;
+    private final Context              mContext;
+    private final AttributeSet         mAttributes;
+    private final DatePickerController mController;
+    private final Calendar             calendar;
+    private final SelectedDays         selectedDays;
+    private final int                  firstMonth;
+    private final int                  lastMonth;
+    private final boolean              currentDaySelected;
+    private final boolean              allowSingleDay;
 
-	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
-        this.typedArray = typedArray;
+
+    public SimpleMonthAdapter(Context context, DatePickerController datePickerController, AttributeSet attrs)
+    {
+        mContext = context;
+        mAttributes = attrs;
         calendar = Calendar.getInstance();
+        selectedDays = new SelectedDays();
+        mController = datePickerController;
+
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
         firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, calendar.get(Calendar.MONTH));
         lastMonth = typedArray.getInt(R.styleable.DayPickerView_lastMonth, (calendar.get(Calendar.MONTH) - 1) % MONTHS_IN_YEAR);
-        selectedDays = new SelectedDays();
-		mContext = context;
-		mController = datePickerController;
-		init();
-	}
+        currentDaySelected = typedArray.getBoolean(R.styleable.DayPickerView_currentDaySelected, false);
+        allowSingleDay = typedArray.getBoolean(R.styleable.DayPickerView_allowSingleDay, true);
+        typedArray.recycle();
+
+        init();
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
-        final SimpleMonthView simpleMonthView = new SimpleMonthView(mContext, typedArray);
+        final SimpleMonthView simpleMonthView = new SimpleMonthView(mContext, mAttributes);
         return new ViewHolder(simpleMonthView, this);
     }
 
@@ -144,8 +155,9 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     }
 
 	protected void init() {
-        if (typedArray.getBoolean(R.styleable.DayPickerView_currentDaySelected, false))
+        if (currentDaySelected) {
             onDayTapped(new CalendarDay(System.currentTimeMillis()));
+        }
 	}
 
 	public void onDayClick(SimpleMonthView simpleMonthView, CalendarDay calendarDay) {
@@ -155,10 +167,8 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 	}
 
 	protected void onDayTapped(CalendarDay calendarDay) {
-        if (!typedArray.getBoolean(R.styleable.DayPickerView_allowSingleDay, true) &&
-            selectedDays.getFirst() != null && selectedDays.getLast() == null &&
-            CalendarUtils.isSameDay(calendarDay.getCalendar(), selectedDays.getFirst().getCalendar()))
-        {
+        if (!allowSingleDay && selectedDays.getFirst() != null && selectedDays.getLast() == null &&
+                CalendarUtils.isSameDay(calendarDay.getCalendar(), selectedDays.getFirst().getCalendar())) {
             // Don't allow same day selection
             return;
         }

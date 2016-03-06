@@ -33,6 +33,7 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.text.format.DateUtils;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -119,7 +120,7 @@ class SimpleMonthView extends View
 
     private OnDayClickListener mOnDayClickListener;
 
-    public SimpleMonthView(Context context, TypedArray typedArray)
+    public SimpleMonthView(Context context, AttributeSet attrs)
     {
         super(context);
 
@@ -129,7 +130,10 @@ class SimpleMonthView extends View
         today = Calendar.getInstance();
         mDayOfWeekTypeface = SANS_SERIF;
         mMonthTitleTypeface = SANS_SERIF;
-        mCurrentDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorCurrentDay, resources.getColor(R.color.normal_day));
+
+		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
+
+		mCurrentDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorCurrentDay, resources.getColor(R.color.normal_day));
         mMonthTextColor = typedArray.getColor(R.styleable.DayPickerView_colorMonthName, resources.getColor(R.color.normal_day));
         mDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorDayName, resources.getColor(R.color.normal_day));
         mDayNumColor = typedArray.getColor(R.styleable.DayPickerView_colorNormalDay, resources.getColor(R.color.normal_day));
@@ -150,6 +154,8 @@ class SimpleMonthView extends View
         mRowHeight = ((typedArray.getDimensionPixelSize(R.styleable.DayPickerView_calendarHeight, resources.getDimensionPixelOffset(R.dimen.calendar_height)) - MONTH_HEADER_SIZE) / 6);
 
         isPrevDayEnabled = typedArray.getBoolean(R.styleable.DayPickerView_enablePreviousDay, true);
+
+		typedArray.recycle();
 
         initView();
     }
