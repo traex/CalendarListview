@@ -24,6 +24,7 @@
 package com.andexert.calendarlistview.library;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -33,7 +34,7 @@ import com.andexert.calendarlistview.library.SimpleMonthAdapter.CalendarDay;
 public class DayPickerView extends RecyclerView
 {
 	protected Context              mContext;
-	private   AttributeSet         mAttributes;
+	private   DatePickerAttributes mAttributes;
 	protected SimpleMonthAdapter   mAdapter;
 	private   DatePickerController mController;
 	private   OnScrollListener     onScrollListener;
@@ -58,7 +59,10 @@ public class DayPickerView extends RecyclerView
         super(context, attrs, defStyle);
         if (!isInEditMode())
         {
-            mAttributes = attrs;
+			TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
+			mAttributes = new DatePickerAttributes(context, typedArray);
+			typedArray.recycle();
+
             setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             init(context);
         }
@@ -132,7 +136,7 @@ public class DayPickerView extends RecyclerView
         return mController;
     }
 
-    protected AttributeSet getAttributeSet()
+    protected DatePickerAttributes getAttributes()
     {
         return mAttributes;
     }

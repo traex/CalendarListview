@@ -24,9 +24,7 @@
 package com.andexert.calendarlistview.library;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -40,30 +38,18 @@ import java.util.HashMap;
 public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.ViewHolder> implements SimpleMonthView.OnDayClickListener {
     protected static final int MONTHS_IN_YEAR = 12;
     private final Context              mContext;
-    private final AttributeSet         mAttributes;
+    private final DatePickerAttributes mAttributes;
     private final DatePickerController mController;
     private final Calendar             calendar;
     private final SelectedDays         selectedDays;
-    private final int                  firstMonth;
-    private final int                  lastMonth;
-    private final boolean              currentDaySelected;
-    private final boolean              allowSingleDay;
 
-
-    public SimpleMonthAdapter(Context context, DatePickerController datePickerController, AttributeSet attrs)
+    public SimpleMonthAdapter(Context context, DatePickerController datePickerController, DatePickerAttributes attrs)
     {
         mContext = context;
         mAttributes = attrs;
         calendar = Calendar.getInstance();
         selectedDays = new SelectedDays();
         mController = datePickerController;
-
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
-        firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, calendar.get(Calendar.MONTH));
-        lastMonth = typedArray.getInt(R.styleable.DayPickerView_lastMonth, (calendar.get(Calendar.MONTH) - 1) % MONTHS_IN_YEAR);
-        currentDaySelected = typedArray.getBoolean(R.styleable.DayPickerView_currentDaySelected, false);
-        allowSingleDay = typedArray.getBoolean(R.styleable.DayPickerView_allowSingleDay, true);
-        typedArray.recycle();
 
         init();
     }
@@ -83,8 +69,8 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         int month;
         int year;
 
-        month = (firstMonth + (position % MONTHS_IN_YEAR)) % MONTHS_IN_YEAR;
-        year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) + ((firstMonth + (position % MONTHS_IN_YEAR)) / MONTHS_IN_YEAR);
+        month = (mAttributes.firstMonth + (position % MONTHS_IN_YEAR)) % MONTHS_IN_YEAR;
+        year = position / MONTHS_IN_YEAR + calendar.get(Calendar.YEAR) + ((mAttributes.firstMonth + (position % MONTHS_IN_YEAR)) / MONTHS_IN_YEAR);
 
         int selectedFirstDay = -1;
         int selectedLastDay = -1;
@@ -131,11 +117,11 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     {
         int itemCount = (((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * MONTHS_IN_YEAR);
 
-        if (firstMonth != -1)
-            itemCount -= firstMonth;
+        if (mAttributes.firstMonth != -1)
+            itemCount -= mAttributes.firstMonth;
 
-        if (lastMonth != -1)
-            itemCount -= (MONTHS_IN_YEAR - lastMonth) - 1;
+        if (mAttributes.lastMonth != -1)
+            itemCount -= (MONTHS_IN_YEAR - mAttributes.lastMonth) - 1;
 
         return itemCount;
     }
@@ -155,7 +141,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     }
 
 	protected void init() {
-        if (currentDaySelected) {
+        if (mAttributes.currentDaySelected) {
             onDayTapped(new CalendarDay(System.currentTimeMillis()));
         }
 	}
@@ -167,7 +153,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 	}
 
 	protected void onDayTapped(CalendarDay calendarDay) {
-        if (!allowSingleDay && selectedDays.getFirst() != null && selectedDays.getLast() == null &&
+        if (!mAttributes.allowSingleDay && selectedDays.getFirst() != null && selectedDays.getLast() == null &&
                 CalendarUtils.isSameDay(calendarDay.getCalendar(), selectedDays.getFirst().getCalendar())) {
             // Don't allow same day selection
             return;
