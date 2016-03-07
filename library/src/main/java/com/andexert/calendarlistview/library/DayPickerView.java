@@ -29,16 +29,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.andexert.calendarlistview.library.SimpleMonthAdapter.CalendarDay;
+
 public class DayPickerView extends RecyclerView
 {
-    protected Context mContext;
-	protected SimpleMonthAdapter mAdapter;
-	private DatePickerController mController;
+	protected Context              mContext;
+	private   DatePickerAttributes mAttributes;
+	protected SimpleMonthAdapter   mAdapter;
+	private   DatePickerController mController;
+	private   OnScrollListener     onScrollListener;
+
     protected int mCurrentScrollState = 0;
-	protected long mPreviousScrollPosition;
-	protected int mPreviousScrollState = 0;
-    private TypedArray typedArray;
-    private OnScrollListener onScrollListener;
+    protected long mPreviousScrollPosition;
+    protected int mPreviousScrollState = 0;
+
 
     public DayPickerView(Context context)
     {
@@ -55,7 +59,10 @@ public class DayPickerView extends RecyclerView
         super(context, attrs, defStyle);
         if (!isInEditMode())
         {
-            typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
+			TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
+			mAttributes = new DatePickerAttributes(context, typedArray);
+			typedArray.recycle();
+
             setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             init(context);
         }
@@ -67,7 +74,6 @@ public class DayPickerView extends RecyclerView
         setUpAdapter();
         setAdapter(mAdapter);
     }
-
 
 	public void init(Context paramContext) {
         setLayoutManager(new LinearLayoutManager(paramContext));
@@ -91,10 +97,25 @@ public class DayPickerView extends RecyclerView
         };
 	}
 
+    public void setSelectedRange(CalendarDay first, CalendarDay last)
+    {
+        if (mAdapter != null)
+        {
+            if (first != null)
+            {
+                mAdapter.setSelectedDay(first);
+            }
+
+            if (last != null)
+            {
+                mAdapter.setSelectedDay(last);
+            }
+		}
+	}
 
 	protected void setUpAdapter() {
 		if (mAdapter == null) {
-			mAdapter = new SimpleMonthAdapter(getContext(), mController, typedArray);
+			mAdapter = new SimpleMonthAdapter(getContext(), mController, mAttributes);
         }
 		mAdapter.notifyDataSetChanged();
 	}
@@ -105,7 +126,7 @@ public class DayPickerView extends RecyclerView
 		setFadingEdgeLength(0);
 	}
 
-    public SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> getSelectedDays()
+    public SimpleMonthAdapter.SelectedDays getSelectedDays()
     {
         return mAdapter.getSelectedDays();
     }
@@ -115,8 +136,8 @@ public class DayPickerView extends RecyclerView
         return mController;
     }
 
-    protected TypedArray getTypedArray()
+    protected DatePickerAttributes getAttributes()
     {
-        return typedArray;
+        return mAttributes;
     }
 }

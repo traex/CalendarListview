@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import com.andexert.calendarlistview.library.DayPickerView;
 import com.andexert.calendarlistview.library.SimpleMonthAdapter;
 
+import java.util.Calendar;
+
 
 public class MainActivity extends Activity implements com.andexert.calendarlistview.library.DatePickerController {
 
@@ -46,7 +48,7 @@ public class MainActivity extends Activity implements com.andexert.calendarlistv
     @Override
     public int getMaxYear()
     {
-        return 2015;
+        return Calendar.getInstance().get(Calendar.YEAR) + 1;
     }
 
     @Override
@@ -56,9 +58,8 @@ public class MainActivity extends Activity implements com.andexert.calendarlistv
     }
 
     @Override
-    public void onDateRangeSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays)
+    public void onDateRangeSelected(SimpleMonthAdapter.SelectedDays selectedDays)
     {
-
         Log.e("Date range selected", selectedDays.getFirst().toString() + " --> " + selectedDays.getLast().toString());
     }
 }
