@@ -74,8 +74,6 @@ class SimpleMonthView extends View
 
 	protected DatePickerAttributes mAttributes;
 
-    private final StringBuilder mStringBuilder;
-
     protected boolean mHasToday           = false;
     protected boolean mIsPrev             = false;
     protected int     mSelectedBeginDay   = -1;
@@ -118,16 +116,11 @@ class SimpleMonthView extends View
         mDayOfWeekTypeface = SANS_SERIF;
         mMonthTitleTypeface = SANS_SERIF;
 
-        mStringBuilder = new StringBuilder(50);
-
         initView();
     }
 
     private int calculateNumRows() {
-        int offset = findDayOffset();
-        int dividend = (offset + mNumCells) / mNumDays;
-        int remainder = (offset + mNumCells) % mNumDays;
-        return (dividend + (remainder > 0 ? 1 : 0));
+        return (int)Math.ceil((findDayOffset() + mNumCells) / (double)mNumDays);
 	}
 
 	private void drawMonthDayLabels(Canvas canvas) {
@@ -157,7 +150,6 @@ class SimpleMonthView extends View
 
 	private String getMonthAndYearString() {
         int flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NO_MONTH_DAY;
-        mStringBuilder.setLength(0);
         long millis = mCalendar.getTimeInMillis();
         return DateUtils.formatDateRange(getContext(), millis, millis, flags);
     }
