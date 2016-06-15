@@ -34,8 +34,8 @@ Declare a DayPickerView inside your layout XML file:
 Next, you have to implement `DatePickerController` in your Activity or your Fragment. 
 You will have to set:
 
-- `getMinYear`: start year 
-- `getMaxYear`: last year
+- `getMinYear`: starting year 
+- `getMaxYear`: final year
 - `getCurrentYear`: is the current year actually displayed
 - `onDayOfMonthSelected`: is called every time user selects a new date
 
