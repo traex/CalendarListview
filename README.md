@@ -31,14 +31,32 @@ Declare a DayPickerView inside your layout XML file:
          
 ```
 
-Next, you have to implement `DatePickerController` in your Activity or your Fragment. You will have to set `getMaxYear` and `onDayOfMonthSelected`. The first one is the max year between the current one and this maxYear. The second one is called every time user selects a new date.
+Next, you have to implement `DatePickerController` in your Activity or your Fragment. 
+You will have to set:
+
+- `getMinYear`: starting year 
+- `getMaxYear`: final year
+- `getCurrentYear`: is the current year actually displayed
+- `onDayOfMonthSelected`: is called every time user selects a new date
 
 ``` java
 
     @Override
+    public int getMinYear()
+    {
+        return 1970;
+    }
+    
+    @Override
     public int getMaxYear()
     {
-        return 2015;
+        return 2016;
+    }
+
+    @Override
+    public int getCurrentYear()
+    {
+        return 2016;
     }
     
     @Override
