@@ -44,7 +44,7 @@ public class CalendarUtils
             case Calendar.NOVEMBER:
                 return 30;
             case Calendar.FEBRUARY:
-                return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) ? 29 : 28;
+                return ((year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0))) ? 29 : 28;
             default:
                 throw new IllegalArgumentException("Invalid Month");
         }
