@@ -145,22 +145,22 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 
 	protected void init() {
         if (typedArray.getBoolean(R.styleable.DayPickerView_currentDaySelected, false))
-            onDayTapped(new CalendarDay(System.currentTimeMillis()));
+            onDayTapped(new CalendarDay(System.currentTimeMillis()), false);
 	}
 
 	public void onDayClick(SimpleMonthView simpleMonthView, CalendarDay calendarDay) {
 		if (calendarDay != null) {
-			onDayTapped(calendarDay);
+			onDayTapped(calendarDay, simpleMonthView.isSingleSelectionOnly());
         }
 	}
 
-	protected void onDayTapped(CalendarDay calendarDay) {
+	protected void onDayTapped(CalendarDay calendarDay, boolean selection) {
 		mController.onDayOfMonthSelected(calendarDay.year, calendarDay.month, calendarDay.day);
-		setSelectedDay(calendarDay);
+		setSelectedDay(calendarDay, selection);
 	}
 
-	public void setSelectedDay(CalendarDay calendarDay) {
-        if (selectedDays.getFirst() != null && selectedDays.getLast() == null)
+	public void setSelectedDay(CalendarDay calendarDay, boolean selection) {
+        if (selectedDays.getFirst() != null && selectedDays.getLast() == null && !selection)
         {
             selectedDays.setLast(calendarDay);
 
