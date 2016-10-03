@@ -103,6 +103,7 @@ class SimpleMonthView extends View
     private int mDayOfWeekStart = 0;
     protected int mMonth;
     protected Boolean mDrawRect;
+    protected Boolean mSingleSelection;
     protected int mRowHeight = DEFAULT_HEIGHT;
     protected int mWidth;
     protected int mYear;
@@ -138,6 +139,8 @@ class SimpleMonthView extends View
         mMonthTitleBGColor = typedArray.getColor(R.styleable.DayPickerView_colorSelectedDayText, resources.getColor(R.color.selected_day_text));
 
         mDrawRect = typedArray.getBoolean(R.styleable.DayPickerView_drawRoundRect, false);
+	
+	mSingleSelection = typedArray.getBoolean(R.styleable.DayPickerView_singleSelectionOnly, false);
 
         mStringBuilder = new StringBuilder(50);
 
@@ -437,6 +440,10 @@ class SimpleMonthView extends View
 
         mNumRows = calculateNumRows();
 	}
+	
+	public boolean isSingleSelectionOnly() {
+            return mSingleSelection;
+        }
 
 	public void setOnDayClickListener(OnDayClickListener onDayClickListener) {
 		mOnDayClickListener = onDayClickListener;
